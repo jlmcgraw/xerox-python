@@ -1,0 +1,37 @@
+name: Docs on main
+run-name: build-docs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'src/{{ module_name }}/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+
+    - name: Set up Python
+      run: uv python install {{ default_python_version }}
+
+    - name: Build Documentation
+      run: |
+        make docs
+
+    - name: Deploy documentation
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: {{ "${{ secrets.GITHUB_TOKEN }}" }}
+        publish_dir: ./docs/site

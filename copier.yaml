@@ -1,0 +1,86 @@
+clean_existing:
+  type: bool
+  default: false
+  help: Clean existing target instead of updating
+
+project_name:
+  type: str
+  help: What is the name of the project?
+
+project_summary:
+  type: str
+  help: Provide a short summary of the project.
+
+module_name:
+  type: str
+  help: What is the Python module name?
+
+python_versions:
+  type: str
+  default:
+    - "3.9"
+    - "3.10"
+    - "3.11"
+    - "3.12"
+    - "3.13"
+  multiselect: true
+  choices:
+    - "3.9"
+    - "3.10"
+    - "3.11"
+    - "3.12"
+    - "3.13"
+
+default_python_version:
+  type: str
+  default: "{{python_versions[-1]}}"
+  choices: |
+    {% for ver in python_versions %}
+    - "{{ver}}"
+    {% endfor %}
+
+_subdirectory: template
+
+# This doesn't work and it's super annoying
+# _migrations:
+#   - command: "echo 'Cleaning existing project at {{project_name}}' && rm -r ../{{project_name}}"
+#     when: "{{ clean_existing and _stage == 'before' }}"
+
+# These should probably only trigger on new projects not updates
+_tasks:
+  - working_directory: "{{ project_name }}"
+    command: "make qa"
+  - working_directory: "{{ project_name }}"
+    command: "git init ."
+  - working_directory: "{{ project_name }}"
+    command: "git add README.md"
+  - working_directory: "{{ project_name }}"
+    command: "git commit -m 'Initial Commit'"
+  - working_directory: "{{ project_name }}"
+    command: "git add ."
+  - working_directory: "{{ project_name }}"
+    command: "git commit -m 'feat: Initialized project'"
+  - working_directory: "{{ project_name }}"
+    command: "gh repo create --description='{{ project_summary }}' --source=. --public {{ project_name }}"
+  - working_directory: "{{ project_name }}"
+    command: "git push -u origin main"
+  - working_directory: "{{ project_name }}"
+    command: >
+      while [ -z "$(gh run list --json databaseId,name | jq '.[] | select(.name == "build-docs")')" ]; do
+        echo "Waiting for docs build action to start" && sleep 1;
+      done
+  - working_directory: "{{ project_name }}"
+    command: >
+      gh run list --json databaseId,name
+      | jq '.[] | select(.name == "build-docs")'
+      | jq '.databaseId'
+      | xargs gh run watch --exit-status
+  - working_directory: "{{ project_name }}"
+    command: >
+      gh api
+      --method=POST
+      -H "Accept: application/vnd.github+json"
+      "/repos/dusktreader/so-dumb/pages"
+      -f "source[branch]=gh-pages"
+      -f "source[path]=/"
+      -f "build_type=legacy"

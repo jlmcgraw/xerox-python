@@ -1,0 +1,18 @@
+[project]
+name = "dusky-clone"
+version = "0.1.0"
+description = "Python project template for dusktreader@github"
+authors = [
+    {name = "Tucker Beck", email ="tucker.beck@gmail.com"},
+]
+readme = "README.md"
+license-files = ["LICENSE.md"]
+requires-python = ">=3.13"
+dependencies = [
+    "copier>=9.6.0",
+]
+
+[project.urls]
+homepage = "https://github.com/dusktreader/dusky-clone"
+source = "https://github.com/dusktreader/dusky-clone"
+changelog = "https://github.com/dusktreader/dusky-clone/blob/main/CHANGELOG.md"

@@ -1,0 +1,69 @@
+[project]
+name = "{{project_name}}"
+version = "0.1.0"
+description = "{{project_summary}}"
+authors = [
+    {name = "Tucker Beck", email ="tucker.beck@gmail.com"},
+]
+readme = "README.md"
+license-files = ["LICENSE.md"]
+{# This sucks because it will include versions between the first and last that were excluded #}
+requires-python = ">={{python_versions[0]}}, ~={{python_versions[-1]}}"
+dependencies = []
+
+[project.urls]
+homepage = "https://github.com/dusktreader/{{project_name}}"
+source = "https://github.com/dusktreader/{{project_name}}"
+changelog = "https://github.com/dusktreader/{{project_name}}/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "basedpyright~=1.28",
+    "ipython~=8.18",
+    "mkdocs-material~=9.6",
+    "mkdocstrings[python]~=0.29",
+    "mypy~=1.15",
+    "pyclean~=3.1",
+    "pygments~=2.19",
+    "pytest~=8.3",
+    "pytest-cov~=6.0",
+    "pytest-random-order~=1.1",
+    "ruff~=0.11",
+]
+
+[tool.uv]
+package = true
+
+[tool.pytest.ini_options]
+addopts = [
+    "--cov=src/{{module_name}}",
+    "--cov-report=term-missing",
+    "--cov-fail-under=90",
+    "--cov-report=xml:.coverage.xml",
+    "--junitxml=.junit.xml",
+    "--override-ini=junit_family=legacy",
+]
+
+[tool.ruff]
+line-length = 120
+src = ["src/{{module_name}}", "tests"]
+
+[tool.mypy]
+pretty = true
+files = ["src/{{module_name}}", "tests"]
+
+[[tool.mypy.overrides]]
+module = []
+ignore_missing_imports = true
+
+[tool.basedpyright]
+reportAny = false
+reportExplicitAny = false
+reportUnusedCallResult = false
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/{{module_name}}"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
