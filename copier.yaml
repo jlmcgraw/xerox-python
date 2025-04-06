@@ -1,11 +1,13 @@
-clean_existing:
-  type: bool
-  default: false
-  help: Clean existing target instead of updating
-
 project_name:
   type: str
   help: What is the name of the project?
+  validator: |
+    {% if project_name|length < 4 or project_name|length > 40 %}
+    project_name must be between 4 and 40 characters
+    {% endif %}
+    {% if not (project_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
+    project_name must start with a letter, followed one or more letters, digits or dashes (all lowercase).
+    {% endif %}
 
 project_summary:
   type: str
@@ -14,9 +16,18 @@ project_summary:
 module_name:
   type: str
   help: What is the Python module name?
+  default: "{{ project_name.replace('-', '_') }}"
+  validator: |
+    {% if module_name|length < 4 or module_name|length > 40 %}
+    module_name must be between 4 and 40 characters
+    {% endif %}
+    {% if not (module_name | regex_search('^[a-z][a-z0-9_]+$')) %}
+    module_name must start with a letter, followed one or more letters, digits or underscores (all lowercase).
+    {% endif %}
 
 python_versions:
   type: str
+  help: What Python versions will be supported?
   default:
     - "3.9"
     - "3.10"
@@ -30,9 +41,15 @@ python_versions:
     - "3.11"
     - "3.12"
     - "3.13"
+  validator: |
+    {% set all_ver = ["3.9", "3.10", "3.11", "3.12", "3.13"] %}
+    {% if all_ver.index(python_versions[-1]) - all_ver.index(python_versions[0]) + 1 != python_versions|length %}
+    python_versions must be a consecutive list of versions
+    {% endif %}
 
 default_python_version:
   type: str
+  help: What is the default Python version to use?
   default: "{{python_versions[-1]}}"
   choices: |
     {% for ver in python_versions %}
@@ -40,11 +57,6 @@ default_python_version:
     {% endfor %}
 
 _subdirectory: template
-
-# This doesn't work and it's super annoying
-# _migrations:
-#   - command: "echo 'Cleaning existing project at {{project_name}}' && rm -r ../{{project_name}}"
-#     when: "{{ clean_existing and _stage == 'before' }}"
 
 # These should probably only trigger on new projects not updates
 _tasks:
@@ -59,9 +71,9 @@ _tasks:
   - working_directory: "{{ project_name }}"
     command: "git add ."
   - working_directory: "{{ project_name }}"
-    command: "git commit -m 'feat: Initialized project'"
+    command: "git commit -m 'feat: Bootstrapped the {{ project_name }} project'"
   - working_directory: "{{ project_name }}"
-    command: "gh repo create --description='{{ project_summary }}' --source=. --public {{ project_name }}"
+    command: "gh repo create --description=\"{{ project_summary }}\" --source=. --public {{ project_name }}"
   - working_directory: "{{ project_name }}"
     command: "git push -u origin main"
   - working_directory: "{{ project_name }}"
@@ -78,9 +90,25 @@ _tasks:
   - working_directory: "{{ project_name }}"
     command: >
       gh api
+      --silent
       --method=POST
       -H "Accept: application/vnd.github+json"
-      "/repos/dusktreader/so-dumb/pages"
+      "/repos/dusktreader/{{ project_name }}/pages"
       -f "source[branch]=gh-pages"
       -f "source[path]=/"
       -f "build_type=legacy"
+  - working_directory: "{{ project_name }}"
+    command: >
+      while [ -z "$(gh run list --json databaseId,name | jq '.[] | select(.name == "pages build and deployment")')" ]; do
+        echo "Waiting for page deploy action to start" && sleep 1;
+      done
+  - working_directory: "{{ project_name }}"
+    command: >
+      gh run list --json databaseId,name
+      | jq '.[] | select(.name == "pages build and deployment")'
+      | jq '.databaseId'
+      | xargs gh run watch --exit-status
+  - working_directory: "{{ project_name }}"
+    command: >
+      echo "Finished bootstrapping {{ project_name }}!" &&
+      echo "Check it out at https://github.com/dusktreader/{{ project_name }}"
