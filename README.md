@@ -12,10 +12,20 @@
 > This template is _extremely_ opinionated. In fact, it has hard coded my github profile name in a few places!
 > Thus it's not going to be _immediately_ useful for anyone else unless they adapt it to their needs.
 
+
 ## Usage
+
+## Local
 
 Just run `make`:
 
 ```bash
 make
+```
+
+
+## One line
+
+```bash
+uvx copier copy --trust gh:dusktreader/xerox-python .
 ```
