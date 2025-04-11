@@ -51,5 +51,5 @@ uvx copier copy --trust gh:dusktreader/xerox-python .
 ### `fastapi` branch:
 
 ```bash
-uvx copier copy --trust gh:dusktreader/xerox-python --vcs_ref=fastapi .
+uvx copier copy --trust gh:dusktreader/xerox-python --vcs-ref=fastapi .
 ```
