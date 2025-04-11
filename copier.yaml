@@ -56,6 +56,18 @@ default_python_version:
     - "{{ver}}"
     {% endfor %}
 
+initialize_git:
+  type: bool
+  help: Should I initialize this project as a git repository?
+  default: true
+
+push_to_github:
+  type: bool
+  help: Should I publish this project to github?
+  default: "{{ initialize_git }}"
+  when: "{{ initialize_git }}"
+
+
 _subdirectory: template
 
 # These should probably only trigger on new projects not updates
@@ -64,29 +76,38 @@ _tasks:
     command: "make qa"
   - working_directory: "{{ project_name }}"
     command: "git init ."
+    when: "{{ initialize_git }}"
   - working_directory: "{{ project_name }}"
     command: "git add README.md"
+    when: "{{ initialize_git }}"
   - working_directory: "{{ project_name }}"
     command: "git commit -m 'Initial Commit'"
+    when: "{{ initialize_git }}"
   - working_directory: "{{ project_name }}"
     command: "git add ."
+    when: "{{ initialize_git }}"
   - working_directory: "{{ project_name }}"
     command: "git commit -m 'feat: Bootstrapped the {{ project_name }} project'"
+    when: "{{ initialize_git }}"
   - working_directory: "{{ project_name }}"
     command: "gh repo create --description=\"{{ project_summary }}\" --source=. --public {{ project_name }}"
+    when: "{{ push_to_github }}"
   - working_directory: "{{ project_name }}"
     command: "git push -u origin main"
+    when: "{{ push_to_github }}"
   - working_directory: "{{ project_name }}"
     command: >
       while [ -z "$(gh run list --json databaseId,name | jq '.[] | select(.name == "build-docs")')" ]; do
         echo "Waiting for docs build action to start" && sleep 1;
       done
+    when: "{{ push_to_github }}"
   - working_directory: "{{ project_name }}"
     command: >
       gh run list --json databaseId,name
       | jq '.[] | select(.name == "build-docs")'
       | jq '.databaseId'
       | xargs gh run watch --exit-status
+    when: "{{ push_to_github }}"
   - working_directory: "{{ project_name }}"
     command: >
       gh api
@@ -97,18 +118,22 @@ _tasks:
       -f "source[branch]=gh-pages"
       -f "source[path]=/"
       -f "build_type=legacy"
+    when: "{{ push_to_github }}"
   - working_directory: "{{ project_name }}"
     command: >
       while [ -z "$(gh run list --json databaseId,name | jq '.[] | select(.name == "pages build and deployment")')" ]; do
         echo "Waiting for page deploy action to start" && sleep 1;
       done
+    when: "{{ push_to_github }}"
   - working_directory: "{{ project_name }}"
     command: >
       gh run list --json databaseId,name
       | jq '.[] | select(.name == "pages build and deployment")'
       | jq '.databaseId'
       | xargs gh run watch --exit-status
-  - working_directory: "{{ project_name }}"
-    command: >
-      echo "Finished bootstrapping {{ project_name }}!" &&
+    when: "{{ push_to_github }}"
+  - command: >
+      echo "Finished bootstrapping {{ project_name }}!"
+  - command: >
       echo "Check it out at https://github.com/dusktreader/{{ project_name }}"
+    when: "{{ push_to_github }}"
