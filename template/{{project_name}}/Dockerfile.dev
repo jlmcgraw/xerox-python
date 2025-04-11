@@ -1,0 +1,12 @@
+FROM ghcr.io/astral-sh/uv:debian-slim
+
+RUN apt update && apt install make
+
+WORKDIR /app
+
+# This is so dumb, but uv won't build if the README isn't there
+RUN touch /app/README.md
+COPY ./src /app/src
+COPY ./pyproject.toml /app/pyproject.toml
+COPY ./uv.lock /app/uv.lock
+COPY Makefile .

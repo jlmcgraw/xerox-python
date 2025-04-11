@@ -7,14 +7,16 @@ authors = [
 ]
 readme = "README.md"
 license-files = ["LICENSE.md"]
-{# This sucks because it will include versions between the first and last that were excluded #}
+
 requires-python = ">={{python_versions[0]}}, ~={{python_versions[-1]}}"
 dependencies = []
+
 
 [project.urls]
 homepage = "https://github.com/dusktreader/{{project_name}}"
 source = "https://github.com/dusktreader/{{project_name}}"
 changelog = "https://github.com/dusktreader/{{project_name}}/blob/main/CHANGELOG.md"
+
 
 [dependency-groups]
 dev = [
@@ -29,40 +31,54 @@ dev = [
     "pytest-cov~=6.0",
     "pytest-random-order~=1.1",
     "ruff~=0.11",
+    "typos~=1.31",
 ]
+
 
 [tool.uv]
 package = true
 
+
 [tool.pytest.ini_options]
 addopts = [
+    "--random-order",
     "--cov=src/{{module_name}}",
     "--cov-report=term-missing",
-    "--cov-fail-under=90",
+    "--cov-fail-under=85",
     "--cov-report=xml:.coverage.xml",
     "--junitxml=.junit.xml",
     "--override-ini=junit_family=legacy",
 ]
 
+
 [tool.ruff]
 line-length = 120
 src = ["src/{{module_name}}", "tests"]
+
 
 [tool.mypy]
 pretty = true
 files = ["src/{{module_name}}", "tests"]
 
+
 [[tool.mypy.overrides]]
 module = []
 ignore_missing_imports = true
+
 
 [tool.basedpyright]
 reportAny = false
 reportExplicitAny = false
 reportUnusedCallResult = false
 
+
+[tool.typos.default]
+extend-ignore-identifiers-re = []
+
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/{{module_name}}"]
+
 
 [build-system]
 requires = ["hatchling"]

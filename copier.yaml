@@ -1,6 +1,7 @@
 project_name:
   type: str
   help: What is the name of the project?
+  default: space-monkey
   validator: |
     {% if project_name|length < 4 or project_name|length > 40 %}
     project_name must be between 4 and 40 characters
@@ -12,6 +13,7 @@ project_name:
 project_summary:
   type: str
   help: Provide a short summary of the project.
+  default: It's a trial run
 
 module_name:
   type: str
@@ -90,7 +92,13 @@ _tasks:
     command: "git commit -m 'feat: Bootstrapped the {{ project_name }} project'"
     when: "{{ initialize_git }}"
   - working_directory: "{{ project_name }}"
-    command: "gh repo create --description=\"{{ project_summary }}\" --source=. --public {{ project_name }}"
+    command: >
+      gh repo create
+      --description="{{ project_summary }}"
+      --source=.
+      --homepage="https://dusktreader.github.io/{{ project_name }}"
+      --public
+      {{ project_name }}
     when: "{{ push_to_github }}"
   - working_directory: "{{ project_name }}"
     command: "git push -u origin main"
