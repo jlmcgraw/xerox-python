@@ -15,9 +15,21 @@
 
 ## Usage
 
+There are two branches available that each build a different project type:
+
+- `main`: Builds a basic python project
+- `fastapi`: Builds a basic FastAPI python project
+
+
 ## Local
 
-Just run `make`:
+Clone this repo:
+
+```
+git clone git@github.com:dukstreader/xerox-python
+```
+
+Checkout the branch you want (if not main), and then just run `make`:
 
 ```bash
 make
@@ -26,6 +38,18 @@ make
 
 ## One line
 
+You can use the following one-line commands to build a project from the selected branch
+
+
+### `main` branch
+
 ```bash
 uvx copier copy --trust gh:dusktreader/xerox-python .
+```
+
+
+### `fastapi` branch:
+
+```bash
+uvx copier copy --trust gh:dusktreader/xerox-python --vcs_ref=fastapi .
 ```
