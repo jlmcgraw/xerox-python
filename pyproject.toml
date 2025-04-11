@@ -1,5 +1,5 @@
 [project]
-name = "dusky-clone"
+name = "xerox-python"
 version = "0.1.0"
 description = "Python project template for dusktreader@github"
 authors = [
@@ -13,6 +13,6 @@ dependencies = [
 ]
 
 [project.urls]
-homepage = "https://github.com/dusktreader/dusky-clone"
-source = "https://github.com/dusktreader/dusky-clone"
-changelog = "https://github.com/dusktreader/dusky-clone/blob/main/CHANGELOG.md"
+homepage = "https://github.com/dusktreader/xerox-python"
+source = "https://github.com/dusktreader/xerox-python"
+changelog = "https://github.com/dusktreader/xerox-python/blob/main/CHANGELOG.md"
