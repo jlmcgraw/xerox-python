@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added some defaults
 - Added version
 - Added homepage to github
+- Added branch for fastapi
 
 ## v0.1.0 - 2025-04-04
 - Created template project

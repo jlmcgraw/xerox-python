@@ -42,7 +42,7 @@ qa/lint:  ## Run linters
 	uv run typos ${PACKAGE_TARGET} tests
 
 .PHONY: qa/full
-qa/full: test lint types  ## Run the full set of quality checks
+qa/full: qa/test qa/lint qa/types  ## Run the full set of quality checks
 	@echo "All quality checks pass!"
 
 .PHONY: qa/format

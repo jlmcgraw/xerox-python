@@ -58,6 +58,11 @@ default_python_version:
     - "{{ver}}"
     {% endfor %}
 
+run_qa_checks:
+  type: bool
+  help: Should I run quality checks after building?
+  default: false
+
 initialize_git:
   type: bool
   help: Should I initialize this project as a git repository?
@@ -75,7 +80,10 @@ _subdirectory: template
 # These should probably only trigger on new projects not updates
 _tasks:
   - working_directory: "{{ project_name }}"
-    command: "make qa"
+    command: "uv sync"
+  - working_directory: "{{ project_name }}"
+    command: "make qa/full"
+    when: "{{ run_qa_checks }}"
   - working_directory: "{{ project_name }}"
     command: "git init ."
     when: "{{ initialize_git }}"
