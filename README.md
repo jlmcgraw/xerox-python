@@ -53,3 +53,10 @@ uvx copier copy --trust gh:dusktreader/xerox-python .
 ```bash
 uvx copier copy --trust gh:dusktreader/xerox-python --vcs-ref=fastapi .
 ```
+
+
+### `flask` branch:
+
+```bash
+uvx copier copy --trust gh:dusktreader/xerox-python --vcs-ref=flask .
+```
