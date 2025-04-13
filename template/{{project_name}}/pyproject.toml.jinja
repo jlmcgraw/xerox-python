@@ -1,21 +1,21 @@
 [project]
-name = "{{project_name}}"
+name = "{{ project_name }}"
 version = "0.1.0"
-description = "{{project_summary}}"
+description = "{{ project_summary }}"
 authors = [
-    {name = "Tucker Beck", email ="tucker.beck@gmail.com"},
+    {name = "{{ author_name }}", email ="{{ author_email }}"},
 ]
 readme = "README.md"
 license-files = ["LICENSE.md"]
 
-requires-python = ">={{python_versions[0]}}, ~={{python_versions[-1]}}"
+requires-python = ">={{ python_versions[0] }}, ~={{ python_versions[-1] }}"
 dependencies = []
 
 
 [project.urls]
-homepage = "https://github.com/dusktreader/{{project_name}}"
-source = "https://github.com/dusktreader/{{project_name}}"
-changelog = "https://github.com/dusktreader/{{project_name}}/blob/main/CHANGELOG.md"
+homepage = "https://github.com/{{ github_account }}/{{project_name}}"
+source = "https://github.com/{{ github_account }}/{{project_name}}"
+changelog = "https://github.com/{{ github_account }}/{{project_name}}/blob/main/CHANGELOG.md"
 
 
 [dependency-groups]
@@ -42,7 +42,7 @@ package = true
 [tool.pytest.ini_options]
 addopts = [
     "--random-order",
-    "--cov=src/{{module_name}}",
+    "--cov=src/{{ module_name }}",
     "--cov-report=term-missing",
     "--cov-fail-under=85",
     "--cov-report=xml:.coverage.xml",
@@ -53,12 +53,12 @@ addopts = [
 
 [tool.ruff]
 line-length = 120
-src = ["src/{{module_name}}", "tests"]
+src = ["src/{{ module_name }}", "tests"]
 
 
 [tool.mypy]
 pretty = true
-files = ["src/{{module_name}}", "tests"]
+files = ["src/{{ module_name }}", "tests"]
 
 
 [[tool.mypy.overrides]]
@@ -77,7 +77,7 @@ extend-ignore-identifiers-re = []
 
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/{{module_name}}"]
+packages = ["src/{{ module_name }}"]
 
 
 [build-system]

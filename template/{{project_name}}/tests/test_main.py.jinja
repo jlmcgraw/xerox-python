@@ -1,8 +1,8 @@
 from pytest import CaptureFixture
 
-from {{module_name}}.main import main
+from {{ module_name }}.main import main
 
 
 def test_raise(capsys: CaptureFixture[str]):
     main()
-    assert "Dusktreader" in capsys.readouterr().out
+    assert "Ritchie Blackmore" in capsys.readouterr().out

@@ -15,6 +15,16 @@ project_summary:
   help: Provide a short summary of the project.
   default: It's a trial run
 
+author_name:
+  type: str
+  help: What is the author's name?
+  default: Tucker Beck
+
+author_email:
+  type: str
+  help: What is the author's email address?
+  default: tucker.beck@gmail.com
+
 module_name:
   type: str
   help: What is the Python module name?
@@ -74,6 +84,12 @@ push_to_github:
   default: "{{ initialize_git }}"
   when: "{{ initialize_git }}"
 
+github_account:
+  type: str
+  help: What is the github account I should use?
+  default: dusktreader
+  when: "{{ push_to_github }}"
+
 
 _subdirectory: template
 
@@ -104,7 +120,7 @@ _tasks:
       gh repo create
       --description="{{ project_summary }}"
       --source=.
-      --homepage="https://dusktreader.github.io/{{ project_name }}"
+      --homepage="https://{{ github_account }}.github.io/{{ project_name }}"
       --public
       {{ project_name }}
     when: "{{ push_to_github }}"
@@ -130,7 +146,7 @@ _tasks:
       --silent
       --method=POST
       -H "Accept: application/vnd.github+json"
-      "/repos/dusktreader/{{ project_name }}/pages"
+      "/repos/{{ github_account }}/{{ project_name }}/pages"
       -f "source[branch]=gh-pages"
       -f "source[path]=/"
       -f "build_type=legacy"
@@ -151,5 +167,5 @@ _tasks:
   - command: >
       echo "Finished bootstrapping {{ project_name }}!"
   - command: >
-      echo "Check it out at https://github.com/dusktreader/{{ project_name }}"
+      echo "Check it out at https://github.com/{{ github_account }}/{{ project_name }}"
     when: "{{ push_to_github }}"
