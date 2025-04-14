@@ -96,6 +96,9 @@ _subdirectory: template
 # These should probably only trigger on new projects not updates
 _tasks:
   - working_directory: "{{ project_name }}"
+    command: "gh auth status 2>&1 | grep {{ github_account }}"
+    when: "{{ push_to_github }}"
+  - working_directory: "{{ project_name }}"
     command: "uv sync"
   - working_directory: "{{ project_name }}"
     command: "make qa/full"

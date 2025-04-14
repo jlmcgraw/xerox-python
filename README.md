@@ -6,7 +6,7 @@
 
 [//]: # (Add an asciicast)
 
-`xerox-python` is a project template for me to spin up new python projects in about a minute.
+`xerox-python` is a project template that spins up a new python project in about a minute.
 
 > [!WARNING]
 > This template is _extremely_ opinionated. It creates a Python project just the way I like.
@@ -15,10 +15,11 @@
 
 ## Usage
 
-There are two branches available that each build a different project type:
+There branches available that each build a different project type:
 
-- `main`: Builds a basic python project
+- `main`: [Default] Builds a basic python project
 - `fastapi`: Builds a basic FastAPI python project
+- `flask`: Builds a basic Flask python project
 
 
 ## Local
@@ -29,7 +30,9 @@ Clone this repo:
 git clone git@github.com:dusktreader/xerox-python
 ```
 
-Checkout the branch you want (if not main), and then just run `make`:
+If you want to use a template besides main, checkout the branch you wish to use.
+
+Then just run `make`:
 
 ```bash
 make
