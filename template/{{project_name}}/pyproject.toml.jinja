@@ -60,7 +60,7 @@ src = ["src/{{ module_name }}", "tests"]
 [tool.mypy]
 pretty = true
 files = ["src/{{ module_name }}", "tests"]
-
+check_untyped_defs = true
 
 [[tool.mypy.overrides]]
 module = []

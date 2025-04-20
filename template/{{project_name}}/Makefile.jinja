@@ -28,6 +28,9 @@ clean:  ## Clean up build artifacts and other junk
 
 # ==== Quality Control =================================================================================================
 .PHONY: qa/test
+qa: qa/full  ## Shortcut for qa/full
+
+.PHONY: qa/test
 qa/test:  ## Run the tests
 	uv run pytest
 
@@ -51,6 +54,9 @@ qa/format:  ## RUn code formatter
 
 
 # ==== Documentation ===================================================================================================
+.PHONY: docs
+docs: docs/serve  ## Shortcut for docs/serve
+
 .PHONY: docs/build
 docs/build:  ## Build the documentation
 	uv run mkdocs build --config-file=docs/mkdocs.yaml
