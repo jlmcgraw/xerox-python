@@ -64,3 +64,10 @@ docs/build:  ## Build the documentation
 .PHONY: docs/serve
 docs/serve:  ## Build the docs and start a local dev server
 	uv run mkdocs serve --config-file=docs/mkdocs.yaml --dev-addr=localhost:10000
+
+
+# ==== Other Commands ==================================================================================================
+.PHONY publish
+publish: confirm
+	git tag v$(uv version --short)
+	git push origin v$(uv version --short)
