@@ -57,6 +57,10 @@ line-length = 120
 src = ["src/{{ module_name }}", "tests"]
 
 
+[tool.ruff.format]
+docstring-code-format = true
+
+
 [tool.mypy]
 pretty = true
 files = ["src/{{ module_name }}", "tests"]

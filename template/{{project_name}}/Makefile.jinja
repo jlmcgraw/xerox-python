@@ -50,6 +50,7 @@ qa/full: qa/test qa/lint qa/types  ## Run the full set of quality checks
 
 .PHONY: qa/format
 qa/format:  ## RUn code formatter
+	uv run ruff check --select I --fix ${PACKAGE_TARGET} tests
 	uv run ruff format ${PACKAGE_TARGET} tests
 
 
@@ -67,7 +68,9 @@ docs/serve:  ## Build the docs and start a local dev server
 
 
 # ==== Other Commands ==================================================================================================
-.PHONY publish
+.PHONY: publish
 publish: confirm
-	git tag v$(uv version --short)
-	git push origin v$(uv version --short)
+	@if [[ "$$(git rev-parse --abbrev-ref HEAD)" != "main" ]] then \
+		echo "You must be on the main branch to publish." && exit 1; \
+	fi
+	@git tag v$$(uv version --short) && git push origin v$$(uv version --short)
