@@ -124,7 +124,7 @@ _tasks:
       --description="{{ project_summary }}"
       --source=.
       --homepage="https://{{ github_account }}.github.io/{{ project_name }}"
-      --public
+      --private
       {{ project_name }}
     when: "{{ push_to_github }}"
   - working_directory: "{{ project_name }}"
