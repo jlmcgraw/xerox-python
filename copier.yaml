@@ -18,12 +18,12 @@ project_summary:
 author_name:
   type: str
   help: What is the author's name?
-  default: Tucker Beck
+  default: Jesse McGraw
 
 author_email:
   type: str
   help: What is the author's email address?
-  default: tucker.beck@gmail.com
+  default: jlmcgraw@gmail.com
 
 module_name:
   type: str
@@ -41,20 +41,20 @@ python_versions:
   type: str
   help: What Python versions will be supported?
   default:
-    - "3.9"
     - "3.10"
     - "3.11"
     - "3.12"
     - "3.13"
+    - "3.14"
   multiselect: true
   choices:
-    - "3.9"
     - "3.10"
     - "3.11"
     - "3.12"
     - "3.13"
+    - "3.14"
   validator: |
-    {% set all_ver = ["3.9", "3.10", "3.11", "3.12", "3.13"] %}
+    {% set all_ver = ["3.10", "3.11", "3.12", "3.13", "3.14"] %}
     {% if all_ver.index(python_versions[-1]) - all_ver.index(python_versions[0]) + 1 != python_versions|length %}
     python_versions must be a consecutive list of versions
     {% endif %}
@@ -87,7 +87,7 @@ push_to_github:
 github_account:
   type: str
   help: What is the github account I should use?
-  default: dusktreader
+  default: jlmcgraw
   when: "{{ push_to_github }}"
 
 
