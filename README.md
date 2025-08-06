@@ -27,7 +27,7 @@ There branches available that each build a different project type:
 Clone this repo:
 
 ```
-git clone git@github.com:dusktreader/xerox-python
+git clone git@github.com:jlmcgraw/xerox-python
 ```
 
 If you want to use a template besides main, checkout the branch you wish to use.
@@ -47,19 +47,19 @@ You can use the following one-line commands to build a project from the selected
 ### `main` branch
 
 ```bash
-uvx copier copy --trust gh:dusktreader/xerox-python .
+uvx copier copy --trust gh:jlmcgraw/xerox-python .
 ```
 
 
 ### `fastapi` branch:
 
 ```bash
-uvx copier copy --trust gh:dusktreader/xerox-python --vcs-ref=fastapi .
+uvx copier copy --trust gh:jlmcgraw/xerox-python --vcs-ref=fastapi .
 ```
 
 
 ### `flask` branch:
 
 ```bash
-uvx copier copy --trust gh:dusktreader/xerox-python --vcs-ref=flask .
+uvx copier copy --trust gh:jlmcgraw/xerox-python --vcs-ref=flask .
 ```
