@@ -104,7 +104,7 @@ _tasks:
     command: "make qa/full"
     when: "{{ run_qa_checks }}"
   - working_directory: "{{ project_name }}"
-    command: "git init ."
+    command: "git init --initial-branch=main ."
     when: "{{ initialize_git }}"
   - working_directory: "{{ project_name }}"
     command: "git add README.md"
