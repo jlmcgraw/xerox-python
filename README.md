@@ -30,6 +30,11 @@ Clone this repo:
 git clone git@github.com:jlmcgraw/xerox-python
 ```
 
+Authenticate to github:
+```commandline
+gh auth login
+```
+
 If you want to use a template besides main, checkout the branch you wish to use.
 
 Then just run `make`:
