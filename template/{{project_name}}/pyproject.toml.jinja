@@ -50,21 +50,73 @@ addopts = [
     "--junitxml=.junit.xml",
     "--override-ini=junit_family=legacy",
 ]
-
+pythonpath = ["src"]
 
 [tool.ruff]
-line-length = 120
+line-length = 88
+indent-width = 4
 src = ["src/{{ module_name }}", "tests"]
 
 
 [tool.ruff.format]
 docstring-code-format = true
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+docstring-code-line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "F", # pyflakes
+    "E", # pycodestyle
+    "W", # whitespace and newlines
+    "I", # isort
+    "UP", # modernize
+    "ANN", # flake8 type annotations
+    "S", # flake8 bandit
+    "B", # flake8 bugbear
+    "C4", # flake8 comprehensions
+    "COM", # flake8 commas
+    "T20", # flake8 print
+    "SIM", # flake8 simplify
+    "ARG", # flake8 unused arguments
+    "DTZ", # flake8 datetimes
+    "Q", # flake8 quotes
+    "TCH", # flake8 typecheck
+    "D", # pydocstyle
+    "RUF", # ruff-specific rules
+]
+fixable = ["ALL"]
+ignore = [
+    "D203", "D205", "D213", "D215", "D400", "D401", "D404", "D406",
+    "D407", "D408", "D409", "D413",
+    "COM812",
+    "T201",
+    "I001"
+]
+
+[tool.ruff.lint.per-file-ignores]
+"test*" = ["D", "ANN", "S"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 
 [tool.mypy]
 pretty = true
 files = ["src/{{ module_name }}", "tests"]
 check_untyped_defs = true
+
+python_version = "{{default_python_version}}"
+strict = true
+
+disallow_any_unimported = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+show_error_codes = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
 module = []
@@ -84,6 +136,8 @@ extend-ignore-identifiers-re = []
 [tool.hatch.build.targets.wheel]
 packages = ["src/{{ module_name }}"]
 
+[tool.coverage.run]
+source = ["src"]
 
 [build-system]
 requires = ["hatchling"]

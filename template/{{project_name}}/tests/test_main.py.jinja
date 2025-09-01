@@ -3,6 +3,6 @@ from pytest import CaptureFixture
 from {{ module_name }}.main import main
 
 
-def test_raise(capsys: CaptureFixture[str]):
+def test_raise(capsys: CaptureFixture[str]) -> None:
     main()
     assert "Ritchie Blackmore" in capsys.readouterr().out

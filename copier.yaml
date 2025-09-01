@@ -71,7 +71,7 @@ default_python_version:
 run_qa_checks:
   type: bool
   help: Should I run quality checks after building?
-  default: false
+  default: true
 
 initialize_git:
   type: bool
@@ -116,7 +116,7 @@ _tasks:
     command: "git add ."
     when: "{{ initialize_git }}"
   - working_directory: "{{ project_name }}"
-    command: "git commit -m 'feat: Bootstrapped the {{ project_name }} project'"
+    command: "git commit -m 'Initialize {{ project_name }} project'"
     when: "{{ initialize_git }}"
   - working_directory: "{{ project_name }}"
     command: >
