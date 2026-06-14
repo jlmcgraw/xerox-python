@@ -41,7 +41,7 @@ qa/test:  ## Run the tests
 qa/types:  ## Run static type checks
 	uv run mypy ${PACKAGE_TARGET} tests --pretty
 	uv run basedpyright ${PACKAGE_TARGET} tests
-
+	uv run ty check ${PACKAGE_TARGET} tests
 
 .PHONY: qa/lint
 qa/lint:  ## Run linters
