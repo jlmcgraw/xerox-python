@@ -1,0 +1,17 @@
+{
+    "name": "Custom Development Container",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "updateRemoteUserUID": false,
+    "remoteUser": "vscode",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cmake-tools"
+            ]
+        }
+    },
+    "onCreateCommand": "bash .devcontainer/setup.sh"
+}
